@@ -11,8 +11,16 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  root "rooms#index"
 
+  # Session routes
   get "/signin", to: "sessions#new"
   post "/signin", to: "sessions#create"
   delete "/signout", to: "sessions#destroy"
+
+  # Rooms routes
+  resources :rooms
+
+  # Users routes
+  resources :users
 end
