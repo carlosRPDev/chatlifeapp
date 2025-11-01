@@ -18,8 +18,10 @@ Rails.application.routes.draw do
   post "/signin", to: "sessions#create"
   delete "/signout", to: "sessions#destroy"
 
-  # Rooms routes
-  resources :rooms
+  # Rooms routes and nested messages routes
+  resources :rooms do
+    resources :messages
+  end
 
   # Users routes
   resources :users
