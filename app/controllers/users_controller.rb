@@ -13,6 +13,20 @@ class UsersController < ApplicationController
 
     @messages = @single_room.messages
 
+    @single_room.messages.each do |message|
+      next if message.user == @current_user
+      MessageRead.find_or_create_by(user: @current_user, message: message).update(read_at: Time.current)
+    end
+
+    User.set_active_room(@current_user.id, @single_room.id)
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "unreads_#{@user.id}",
+      target: "room_#{@single_room.id}_unread_count_user_#{@user.id}",
+      partial: "rooms/unread_count",
+      locals: { room: @single_room, user: @user }
+    )
+
     render "rooms/index"
   end
 

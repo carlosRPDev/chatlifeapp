@@ -7,6 +7,7 @@ class Room < ApplicationRecord
 
   has_many :messages
   has_many :participants, dependent: :destroy
+  has_many :users, through: :participants
 
   def broadcast_if_public
     broadcast_append_to "rooms" unless self.is_private
@@ -18,5 +19,25 @@ class Room < ApplicationRecord
       Participant.create(user_id: user.id, room_id: single_room.id)
     end
     single_room
+  end
+
+  # def unread_count_for(user)
+  #   Message
+  #     .joins("LEFT JOIN message_reads ON message_reads.message_id = messages.id AND message_reads.user_id = #{user.id}")
+  #     .where(room_id: id)
+  #     .where("message_reads.read_at IS NULL")
+  #     .where.not(user_id: user.id)
+  #     .count
+  # end
+
+  def unread_count_for(user)
+    return 0 unless user
+
+    Message
+      .joins("LEFT JOIN message_reads mr ON mr.message_id = messages.id AND mr.user_id = #{user.id}")
+      .where(room_id: id)
+      .where.not(user_id: user.id)
+      .where("mr.id IS NULL")
+      .count
   end
 end

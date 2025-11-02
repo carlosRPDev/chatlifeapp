@@ -1,0 +1,8 @@
+<% target_user = (local_assigns[:user] || current_user) %>
+<% unread = room.unread_count_for(target_user) %>
+
+<span id="room_<%= room.id %>_unread_count_user_<%= target_user.id %>">
+  <% if unread.positive? %>
+    <span class="badge bg-danger"><%= unread %></span>
+  <% end %>
+</span>

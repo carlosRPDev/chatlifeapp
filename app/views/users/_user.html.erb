@@ -1,1 +1,9 @@
-<div> <%= link_to user.username, user %> </div>
+<div id="user_<%= user.id %>">
+  <%= link_to user.username, user %>
+  <%= turbo_stream_from "unreads_#{current_user.id}" %>
+  <% private_room_name = [current_user, user].sort_by(&:id).map(&:id).prepend("private").join("_") %>
+  <% private_room = Room.find_by(name: private_room_name) %>
+  <% if private_room %>
+    <%= render "rooms/unread_count", room: private_room, user: current_user %>
+  <% end %>
+</div>
