@@ -21,15 +21,6 @@ class Room < ApplicationRecord
     single_room
   end
 
-  # def unread_count_for(user)
-  #   Message
-  #     .joins("LEFT JOIN message_reads ON message_reads.message_id = messages.id AND message_reads.user_id = #{user.id}")
-  #     .where(room_id: id)
-  #     .where("message_reads.read_at IS NULL")
-  #     .where.not(user_id: user.id)
-  #     .count
-  # end
-
   def unread_count_for(user)
     return 0 unless user
 

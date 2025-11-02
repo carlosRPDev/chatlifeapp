@@ -16,9 +16,6 @@ class RoomsController < ApplicationController
     User.set_active_room(current_user.id, @single_room.id)
 
     @single_room.messages.each do |message|
-      # next if message.user == @current_user
-      # MessageRead.find_or_create_by(user: @current_user, message: message).update(read_at: Time.current)
-
       next if message.user_id == current_user.id
       message.message_reads.find_or_create_by(user: current_user).update(read_at: Time.current)
     end
