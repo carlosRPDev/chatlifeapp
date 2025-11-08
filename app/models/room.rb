@@ -31,7 +31,6 @@ class Room < ApplicationRecord
       room = create_private_room(users, room_name)
     end
 
-    # Asegura que ambos estén como participantes (por si acaso)
     users.each do |user|
       Participant.find_or_create_by!(user_id: user.id, room_id: room.id)
     end
