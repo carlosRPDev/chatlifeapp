@@ -1,0 +1,217 @@
+/* ===== Fondo dinámico tipo Pulse Neon Grid ===== */
+.neon-bg {
+  position: relative;
+  height: 100vh;
+  background: radial-gradient(circle at 20% 30%, #0a0a1a 0%, #000010 100%);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.neon-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #00ffff, #8a2be2, #007bff, #00ffff);
+  background-size: 400% 400%;
+  opacity: 0.15;
+  animation: gradientFlow 10s ease-in-out infinite;
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ===== Tarjeta de login con borde degradado vertical ===== */
+.login-card {
+  position: relative;
+  background: rgba(10, 10, 20, 0.85);
+  border-radius: 16px;
+  width: 360px;
+  padding: 2rem;
+  backdrop-filter: blur(15px);
+  z-index: 10;
+  overflow: hidden;
+  animation: pulseGlow 6s ease-in-out infinite;
+}
+
+/* ==== Borde degradado animado ==== */
+.login-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 4px;
+  border-radius: 16px;
+  background: linear-gradient(to bottom,
+      #00ffff,
+      #8a2be2,
+      #007bff);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: gradientFlowBorder 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes gradientFlowBorder {
+  0% {
+    background-position: 0% 100%;
+  }
+
+  50% {
+    background-position: 100% 0%;
+  }
+
+  100% {
+    background-position: 0% 100%;
+  }
+}
+
+/* ===== Brillo dinámico interno ===== */
+.login-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: radial-gradient(circle at 50% 100%, rgba(0, 255, 255, 0.08), transparent 70%);
+  z-index: -1;
+}
+
+/* ===== Pulso de brillo general ===== */
+@keyframes pulseGlow {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 20px rgba(0, 255, 255, 0.3),
+      0 0 40px rgba(138, 43, 226, 0.2);
+  }
+
+  50% {
+    box-shadow:
+      0 0 40px rgba(0, 255, 255, 0.5),
+      0 0 60px rgba(0, 123, 255, 0.3);
+  }
+}
+
+@keyframes pulseGlow {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 25px rgba(0, 255, 255, 0.4),
+      0 0 60px rgba(138, 43, 226, 0.2);
+  }
+
+  50% {
+    box-shadow:
+      0 0 40px rgba(0, 255, 255, 0.6),
+      0 0 80px rgba(0, 123, 255, 0.3);
+  }
+}
+
+/* ===== Título ===== */
+.logo-title {
+  color: #00ffff;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+  text-shadow:
+    0 0 10px #00ffff,
+    0 0 25px #007bff;
+  letter-spacing: 1px;
+}
+
+.logo-title span {
+  color: #00ffff;
+}
+
+/* ===== Subtítulo ===== */
+.subtitle {
+  color: #9acdfd;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.9rem;
+}
+
+/* ===== Inputs ===== */
+.futuristic-input {
+  background-color: transparent;
+  border: 1px solid rgba(0, 255, 255, 0.4);
+  color: #fff;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.futuristic-input:focus {
+  border-color: #8a2be2;
+  box-shadow: 0 0 12px #8a2be2;
+  outline: none;
+}
+
+/* ===== Botón ===== */
+.btn-futuristic {
+  background: linear-gradient(90deg, #00ffff, #8a2be2, #007bff);
+  background-size: 200%;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  text-transform: uppercase;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.btn-futuristic:hover {
+  background-position: 100% 0;
+  box-shadow: 0 0 25px rgba(138, 43, 226, 0.6);
+  color: #fff;
+}
+
+/* ===== Etiquetas ===== */
+.text-glow {
+  color: #9acdfd;
+  text-shadow: 0 0 5px #007bff;
+}
+
+/* ===== Ajustes mobile ===== */
+@media (max-width: 576px) {
+  body {
+    background: radial-gradient(circle at center, #020617, #000);
+    padding: 1rem;
+  }
+
+  .login-container {
+    width: 100%;
+    max-width: 360px;
+    padding: 2rem 1.5rem;
+    border-width: 2px;
+    border-radius: 12px;
+  }
+
+  .login-container h2 {
+    font-size: 1.4rem;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+  }
+
+  .form-control {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .btn-primary {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+  }
+}
