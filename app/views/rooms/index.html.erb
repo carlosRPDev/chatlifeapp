@@ -34,7 +34,7 @@
         <h4 class="neon-text">💬 <%= @user&.username || @single_room.name %></h4>
       </div>
 
-      <div class="chat-area d-flex flex-column h-100" id="chat-container" data-controller="messages" data-messages-current-user-id-value="<%= @current_user.id %>">
+      <div class="chat-area d-flex flex-column" id="chat-container" data-controller="messages" data-messages-current-user-id-value="<%= @current_user.id %>">
         <% if @single_room.is_private %>
           <%= turbo_stream_from [@single_room, @current_user] %>
         <% else %>

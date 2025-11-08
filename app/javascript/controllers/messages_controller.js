@@ -8,24 +8,33 @@ export default class extends Controller {
     console.log("✅ Connected MessagesController")
     console.log("🧩 currentUserId:", this.currentUserIdValue)
 
-    const messagesEl = this.messagesTarget || document.getElementById("messages")
+    this.messagesContainer = this.messagesTarget || document.getElementById("messages")
 
-    if (messagesEl) {
+    if (this.messagesContainer) {
       // Procesa mensajes existentes al cargar
-      messagesEl.querySelectorAll("[data-message-user-id]").forEach(n => this.processMessageNode(n))
+      this.messagesContainer
+        .querySelectorAll("[data-message-user-id]")
+        .forEach(n => this.processMessageNode(n))
 
       // Observa nuevos mensajes agregados dinámicamente
       this.observer = new MutationObserver(mutations => {
-        for (const m of mutations) {
-          for (const node of m.addedNodes) {
+        for (const mutation of mutations) {
+          for (const node of mutation.addedNodes) {
             if (node.nodeType === Node.ELEMENT_NODE) {
               this.processMessageNode(node)
+              // Esperamos un microtiempo para que el DOM termine de renderizar y luego hacemos scroll
+              setTimeout(() => this.scrollToBottom(), 100)
             }
           }
         }
       })
 
-      this.observer.observe(messagesEl, { childList: true, subtree: true })
+      this.observer.observe(this.messagesContainer, { childList: true, subtree: true })
+
+      // 🪄 Solo al conectar hacemos scroll inicial (después de renderizar todos los mensajes)
+      setTimeout(() => this.scrollToBottom(), 200)
+    } else {
+      console.error("❌ No se encontró el contenedor de mensajes (#messages)")
     }
   }
 
@@ -38,6 +47,7 @@ export default class extends Controller {
       node.matches && node.matches("[data-message-user-id]")
         ? node
         : node.querySelector("[data-message-user-id]")
+
     if (!wrapper) return
 
     const authorId = wrapper.dataset.messageUserId
@@ -47,10 +57,20 @@ export default class extends Controller {
 
     if (String(authorId) === String(this.currentUserIdValue)) {
       wrapper.classList.add("self")
-      if (box) box.classList.add("msg-self")
+      box?.classList.add("msg-self")
     } else {
       wrapper.classList.remove("self")
-      if (box) box.classList.remove("msg-self")
+      box?.classList.remove("msg-self")
     }
+  }
+
+  // 🚀 Desplaza hacia abajo al último mensaje
+  scrollToBottom() {
+    if (!this.messagesContainer) return
+
+    this.messagesContainer.scrollTo({
+      top: this.messagesContainer.scrollHeight,
+      behavior: "smooth"
+    })
   }
 }
