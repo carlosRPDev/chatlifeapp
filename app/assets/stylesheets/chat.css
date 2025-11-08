@@ -1,0 +1,60 @@
+/* ===== Animaciones de mensajes ===== */
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animación base */
+.message-wrapper {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-duration: 0.4s;
+  animation-timing-function: ease-out;
+}
+
+/* Mensaje propio: aparece desde la derecha */
+.message-wrapper.self {
+  animation-name: fadeInRight;
+}
+
+/* Mensaje recibido: aparece desde la izquierda */
+.message-wrapper:not(.self) {
+  animation-name: fadeInLeft;
+}
+
+.message-wrapper.self .message-box {
+  box-shadow: 0 0 6px rgba(0, 255, 255, 0.4);
+  transition: box-shadow 0.3s ease;
+}
+
+.message-wrapper.self:hover .message-box {
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.7);
+}
+
+.message-wrapper:not(.self) .message-box {
+  box-shadow: 0 0 6px rgba(138, 43, 226, 0.4);
+  transition: box-shadow 0.3s ease;
+}
+
+.message-wrapper:not(.self):hover .message-box {
+  box-shadow: 0 0 12px rgba(138, 43, 226, 0.7);
+}
