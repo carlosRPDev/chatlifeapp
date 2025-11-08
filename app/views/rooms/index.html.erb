@@ -1,32 +1,58 @@
-<div class="row">
-  <div class="col-md-2">
-    <h5> Hi <%= @current_user.username %> </h5>
+<div class="sci-fi-dashboard">
+  <div class="sci-fi-sidebar p-3">
+    <div class="text-center mb-4">
+      <h4 class="neon-text">Hi <%= @current_user.username %></h4>
+    </div>
+
     <%= turbo_stream_from "unreads_#{@current_user.id}" %>
-    <h4> Users </h4>
-    <div>
+
+    <div class="mb-4">
+      <h5 class="section-title">Users</h5>
       <%= turbo_stream_from "users" %>
-      <div id="users">
+      <div id="users" class="scrollable">
         <%= render @users %>
       </div>
     </div>
-    <h4> Rooms </h4>
-    <%= render partial: "layouts/new_room_form" %>
-    <div>
+
+    <div class="mb-4">
+      <h5 class="section-title">Rooms</h5>
+      <%= render partial: "layouts/new_room_form" %>
       <%= turbo_stream_from "rooms" %>
-      <div id="rooms">
+      <div id="rooms" class="scrollable">
         <%= render partial: "rooms/room", collection: @rooms, as: :room, locals: { user: @current_user } %>
       </div>
     </div>
-    <%= link_to 'Sign Out', signout_path, data:{ turbo_method: :delete } %>
+
+    <div class="mt-auto text-center">
+      <%= link_to 'Sign Out', signout_path, data: { turbo_method: :delete }, class: "btn btn-logout" %>
+    </div>
   </div>
-  <div class="col-md-10 bg-dark text-light">
+
+  <div class="sci-fi-main bg-dark text-light p-4">
     <% if @single_room %>
-      <h4 class="text-center"> <%= @user&.username || @single_room.name %> </h4>
-      <%= turbo_stream_from @single_room %>
-      <div id="messages">
-        <%= render @messages %>
+      <div class="chat-header text-center mb-3">
+        <h4 class="neon-text">💬 <%= @user&.username || @single_room.name %></h4>
       </div>
-      <%= render partial: 'layouts/new_message_form' %>
+
+      <div class="chat-area d-flex flex-column h-100" id="chat-container" data-controller="messages" data-messages-current-user-id-value="<%= @current_user.id %>">
+        <% if @single_room.is_private %>
+          <%= turbo_stream_from [@single_room, @current_user] %>
+        <% else %>
+          <%= turbo_stream_from [@single_room, @current_user] %>
+          <%= turbo_stream_from @single_room %>
+        <% end %>
+
+        <div id="messages" class="chat-messages flex-grow-1" data-messages-target="messages">
+          <%= render @messages %>
+        </div>
+
+        <%= render partial: 'layouts/new_message_form' %>
+      </div>
+    <% else %>
+      <div class="welcome-message text-center">
+        <h2 class="neon-text">✨ Bienvenido a ChatLifeApp ✨</h2>
+        <p class="text-muted">Selecciona un chat o crea un nuevo room para comenzar.</p>
+      </div>
     <% end %>
   </div>
 </div>

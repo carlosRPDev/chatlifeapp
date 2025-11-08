@@ -1,0 +1,302 @@
+body {
+  font-family: 'Orbitron', sans-serif;
+  background: radial-gradient(circle at center, #050505 0%, #000000 100%);
+  color: #fff;
+  overflow: hidden;
+}
+
+/* ===== Layout general ===== */
+.sci-fi-dashboard {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sci-fi-sidebar {
+  width: 260px;
+  background: rgba(10, 10, 20, 0.85);
+  border-right: 3px solid transparent;
+  border-image: linear-gradient(to top, #00ffff, #8a2be2, #007bff) 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
+  animation: sidebarGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes sidebarGlow {
+  0% {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  }
+
+  100% {
+    box-shadow: 0 0 40px rgba(138, 43, 226, 0.6);
+  }
+}
+
+.sci-fi-main {
+  flex-grow: 1;
+  position: relative;
+  background: radial-gradient(circle at center, #0a0a0f 0%, #000000 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ===== Textos y títulos ===== */
+.neon-text {
+  background: linear-gradient(to top, #00ffff, #8a2be2, #007bff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+
+.section-title {
+  color: #00ffff;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.4);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.3rem;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+/* ===== Sidebar content ===== */
+.scrollable {
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #00ffff transparent;
+}
+
+.scrollable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background-color: #00ffff;
+  border-radius: 10px;
+}
+
+/* ===== Botón logout ===== */
+.btn-logout {
+  background: transparent;
+  border: 1px solid #00ffff;
+  color: #00ffff;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  background: #00ffff;
+  color: #000;
+  box-shadow: 0 0 25px #00ffff;
+}
+
+/* ===== Chat area ===== */
+.chat-header {
+  border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+  padding-bottom: 10px;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  padding-bottom: 90px;
+  scroll-behavior: smooth;
+}
+
+/* ===== Mensajes ===== */
+.message-box {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 10px 14px;
+  max-width: 70%;
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+
+.message-box.msg-self {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(138, 43, 226, 0.3));
+  border: 1px solid #00ffff;
+  align-self: flex-end;
+  text-align: right;
+}
+
+@keyframes messageAppear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Mensajes propios ===== */
+.msg-self {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.35), rgba(138, 43, 226, 0.35), rgba(0, 123, 255, 0.35));
+  border: 1px solid rgba(0, 255, 255, 0.6);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.25);
+  text-align: right;
+  border-radius: 12px;
+}
+
+/* ===== Formulario de mensaje ===== */
+.msg-form input {
+  background: transparent;
+  border: 1px solid rgba(0, 255, 255, 0.6);
+  color: #fff;
+  border-radius: 8px;
+  transition: 0.3s ease;
+}
+
+.msg-form input:focus {
+  border-color: #8a2be2;
+  box-shadow: 0 0 10px #8a2be2;
+  outline: none;
+}
+
+.msg-form .btn {
+  background: linear-gradient(90deg, #00ffff, #8a2be2, #007bff);
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.msg-form .btn:hover {
+  box-shadow: 0 0 25px #00ffff;
+}
+
+/* ===== Adaptabilidad ===== */
+@media (max-width: 768px) {
+  .sci-fi-dashboard {
+    flex-direction: column;
+  }
+
+  .sci-fi-sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .sci-fi-main {
+    padding: 1rem;
+  }
+}
+
+/* ===== Contenedor de cada mensaje ===== */
+.message-wrapper {
+  display: flex;
+  margin: 8px 0;
+}
+
+.message-wrapper.self {
+  justify-content: flex-end;
+}
+
+/* ===== Mensajes generales ===== */
+.message-box {
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 10px 15px;
+  color: #fff;
+  max-width: 60%;
+  word-wrap: break-word;
+  animation: messageAppear 0.3s ease;
+}
+
+/* ===== Animación de aparición ===== */
+@keyframes messageAppear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Área principal del chat --- */
+.chat-area {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+/* --- Contenedor del formulario --- */
+.message-form-container {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  background: rgba(10, 10, 25, 0.85);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(0, 255, 255, 0.2);
+  padding: 12px 16px;
+  z-index: 10;
+}
+
+/* --- Formulario --- */
+.message-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* --- Input --- */
+.message-input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  outline: none;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.message-input:focus {
+  border-color: #8a2be2;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+}
+
+/* --- Botón enviar --- */
+.message-send-btn {
+  background: linear-gradient(135deg, #00ffff, #8a2be2, #0047ff);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.message-send-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
+}
+
+/* --- Versión móvil --- */
+@media (max-width: 768px) {
+  .message-form-container {
+    padding: 8px;
+  }
+
+  .message-input {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .message-send-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+}

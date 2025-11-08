@@ -1,6 +1,6 @@
 class Message < ApplicationRecord
   before_create :confirm_participant
-  after_create_commit { broadcast_append_to self.room }
+  after_create_commit :broadcast_message_to_room
   after_create_commit :mark_as_read_for_sender
   after_create_commit :broadcast_unread_counts
 
@@ -12,7 +12,7 @@ class Message < ApplicationRecord
 
   def confirm_participant
     if self.room.is_private
-      is_participant = Participant.where(user_id: self.user.id, room_id: self.room.id).first
+      is_participant = Participant.exists?(user_id: user.id, room_id: room.id)
       throw :abort unless is_participant
     end
   end
@@ -50,6 +50,42 @@ class Message < ApplicationRecord
           locals: { room: room, user: recipient }
         )
       end
+    end
+  end
+
+  def broadcast_message_to_room
+    if room.is_private
+      # Chats privados → broadcast personalizado a cada usuario
+      broadcast_append_to(
+        [ room, user ],
+        partial: "messages/message",
+        locals: { message: self, current_user: user },
+        target: "messages"
+      )
+
+      room.users.where.not(id: user.id).find_each do |recipient|
+        broadcast_append_to(
+          [ room, recipient ],
+          partial: "messages/message",
+          locals: { message: self, current_user: recipient },
+          target: "messages"
+        )
+      end
+    else
+      # Chats públicos → doble broadcast
+      broadcast_append_to(
+        [ room, user ], # mensaje con estilo propio
+        partial: "messages/message",
+        locals: { message: self, current_user: user },
+        target: "messages"
+      )
+
+      broadcast_append_to(
+        room, # mensaje general (para los demás)
+        partial: "messages/message",
+        locals: { message: self, current_user: nil },
+        target: "messages"
+      )
     end
   end
 end

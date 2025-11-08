@@ -1,7 +1,7 @@
-<div class="cont-<%= message.user.id %>">
-  <div class="message-box msg-<%= message.user.id %> " >
+<div id="message_<%= message.id %>" class="message-wrapper" data-message-user-id="<%= message.user_id %>">
+  <div class="message-box">
     <% unless message.room.is_private %>
-      <h6 class="name"> <%= message.user.username %> </h6>
+      <h6 class="name"><%= message.user.username %></h6>
     <% end %>
     <%= message.content %>
   </div>
