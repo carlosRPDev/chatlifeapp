@@ -21,6 +21,24 @@ class Room < ApplicationRecord
     single_room
   end
 
+  def self.private_room_for(user1, user2)
+    users = [ user1, user2 ].sort_by(&:id)
+    room_name = "private_#{users[0].id}_#{users[1].id}"
+
+    room = Room.find_by(name: room_name)
+
+    unless room
+      room = create_private_room(users, room_name)
+    end
+
+    # Asegura que ambos estén como participantes (por si acaso)
+    users.each do |user|
+      Participant.find_or_create_by!(user_id: user.id, room_id: room.id)
+    end
+
+    room
+  end
+
   def unread_count_for(user)
     return 0 unless user
 
