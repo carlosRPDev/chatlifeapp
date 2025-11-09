@@ -1,11 +1,30 @@
-<div id="room_<%= room.id %>">
-  <%= link_to room.name,
-              room_path(room),
-              data: {
-                action: "click->chat#open",
-                turbo_frame: "chat_panel"
-              },
-              class: "room-link" %>
+<%# app/views/rooms/_room.html.erb %>
+
+<%# --- Manejo seguro del user --- %>
+<% user ||= local_assigns[:user] || begin
+     if defined?(current_user) && current_user
+       current_user
+     elsif params[:room]&.dig(:user_id)
+       User.find_by(id: params[:room][:user_id])
+     else
+       Room.first.users.first # fallback: primer usuario del room
+     end
+   end %>
+
+<div id="room_<%= room.id %>" class="room-item">
+  <%= link_to room_path(room),
+      data: {
+        controller: "chat",
+        action: "click->chat#open",
+        turbo_frame: "chat_panel"
+      },
+      class: "room-link" do %>
+    <span class="room-name"><%= room.name %></span>
+  <% end %>
+
+  <%# --- Turbo stream para los mensajes no leídos del user --- %>
   <%= turbo_stream_from "unreads_#{user.id}" %>
+
+  <%# --- Render del contador de mensajes no leídos --- %>
   <%= render "rooms/unread_count", room: room, user: user %>
 </div>

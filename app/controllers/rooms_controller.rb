@@ -38,13 +38,15 @@ class RoomsController < ApplicationController
 
   def create
     @room = Room.create(name: params["room"]["name"])
+    user = current_user
 
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.append(
           "rooms",
           partial: "rooms/room",
-          locals: { room: @room, current_user: current_user }
+          object: @room,
+          locals: { user: user }
         )
       end
       format.html { redirect_to rooms_path }
