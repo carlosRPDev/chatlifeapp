@@ -1,5 +1,11 @@
 <div id="room_<%= room.id %>">
-  <%= link_to room.name, room %>
+  <%= link_to room.name,
+              room_path(room),
+              data: {
+                action: "click->chat#open",
+                turbo_frame: "chat_panel"
+              },
+              class: "room-link" %>
   <%= turbo_stream_from "unreads_#{user.id}" %>
   <%= render "rooms/unread_count", room: room, user: user %>
 </div>

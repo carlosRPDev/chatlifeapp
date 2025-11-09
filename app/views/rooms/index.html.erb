@@ -1,5 +1,5 @@
-<div class="sci-fi-dashboard">
-  <div class="sci-fi-sidebar p-3">
+<div class="sci-fi-dashboard" data-controller="chat">
+  <div class="sci-fi-sidebar pl-3" data-chat-target="sidebar">
     <div class="text-center mb-4">
       <h4 class="neon-text">Hi <%= @current_user.username %></h4>
     </div>
@@ -28,31 +28,48 @@
     </div>
   </div>
 
-  <div class="sci-fi-main bg-dark text-light p-4">
-    <% if @single_room %>
-      <div class="chat-header text-center mb-3">
-        <h4 class="neon-text">💬 <%= @user&.username || @single_room.name %></h4>
-      </div>
+  <div class="sci-fi-main bg-dark text-light p-4" data-chat-target="panel">
+    <turbo-frame id="chat_panel" target="_top">
+      <% if @single_room %>
+        <!-- HEADER -->
+        <div class="chat-header text-center mb-3 d-flex align-items-center justify-content-between">
+          <button class="btn-back d-md-none btn-back" data-action="click->chat#close">
+            ✖
+          </button>
 
-      <div class="chat-area d-flex flex-column" id="chat-container" data-controller="messages" data-messages-current-user-id-value="<%= @current_user.id %>">
-        <% if @single_room.is_private %>
-          <%= turbo_stream_from [@single_room, @current_user] %>
-        <% else %>
-          <%= turbo_stream_from [@single_room, @current_user] %>
-          <%= turbo_stream_from @single_room %>
-        <% end %>
+          <h4 class="neon-text flex-grow-1 text-center mb-0">
+            💬 <%= @user&.username || @single_room.name %>
+          </h4>
 
-        <div id="messages" class="chat-messages flex-grow-1" data-messages-target="messages">
-          <%= render @messages %>
+          <span class="d-md-none" style="width:32px;"></span>
         </div>
 
-        <%= render partial: 'layouts/new_message_form' %>
-      </div>
-    <% else %>
-      <div class="welcome-message text-center">
-        <h2 class="neon-text">✨ Bienvenido a ChatLifeApp ✨</h2>
-        <p class="text-muted">Selecciona un chat o crea un nuevo room para comenzar.</p>
-      </div>
-    <% end %>
+        <!-- CONTENEDOR DEL CHAT -->
+        <turbo-frame
+          class="chat-area d-flex flex-column"
+          id="chat-container"
+          data-controller="messages"
+          data-messages-current-user-id-value="<%= @current_user.id %>"
+        >
+          <% if @single_room.is_private %>
+            <%= turbo_stream_from [@single_room, @current_user] %>
+          <% else %>
+            <%= turbo_stream_from [@single_room, @current_user] %>
+            <%= turbo_stream_from @single_room %>
+          <% end %>
+
+          <div id="messages" class="chat-messages flex-grow-1" data-messages-target="messages">
+            <%= render @messages %>
+          </div>
+
+          <%= render partial: 'layouts/new_message_form' %>
+        </turbo-frame>
+      <% else %>
+        <div class="welcome-message text-center">
+          <h2 class="neon-text">✨ Bienvenido a ChatLifeApp ✨</h2>
+          <p class="text-muted">Selecciona un chat o crea un nuevo room para comenzar.</p>
+        </div>
+      <% end %>
+    </turbo-frame>
   </div>
 </div>

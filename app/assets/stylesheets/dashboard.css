@@ -1,3 +1,10 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: 'Orbitron', sans-serif;
   background: radial-gradient(circle at center, #050505 0%, #000000 100%);
@@ -13,7 +20,7 @@ body {
 }
 
 .sci-fi-sidebar {
-  width: 260px;
+  width: 460px;
   background: rgba(10, 10, 20, 0.85);
   border-right: 3px solid transparent;
   border-image: linear-gradient(to top, #00ffff, #8a2be2, #007bff) 1;
@@ -92,17 +99,21 @@ body {
   box-shadow: 0 0 25px #00ffff;
 }
 
-/* ===== Chat area ===== */
+/* --- Header del chat --- */
 .chat-header {
-  border-bottom: 1px solid rgba(0, 255, 255, 0.3);
-  padding-bottom: 10px;
+  flex-shrink: 0;
+  padding: 0.75rem 1rem;
+  background: #000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 10;
 }
 
+/* --- Mensajes --- */
 .chat-messages {
-  flex: 1 1 auto;
+  flex-grow: 1;
   overflow-y: auto;
   padding: 1rem;
-  max-height: 90%;
   scroll-behavior: smooth;
 }
 
@@ -171,23 +182,6 @@ body {
   box-shadow: 0 0 25px #00ffff;
 }
 
-/* ===== Adaptabilidad ===== */
-@media (max-width: 768px) {
-  .sci-fi-dashboard {
-    flex-direction: column;
-  }
-
-  .sci-fi-sidebar {
-    width: 100%;
-    flex-direction: row;
-    overflow-x: auto;
-  }
-
-  .sci-fi-main {
-    padding: 1rem;
-  }
-}
-
 /* ===== Contenedor de cada mensaje ===== */
 .message-wrapper {
   display: flex;
@@ -223,13 +217,21 @@ body {
   }
 }
 
-/* --- Área principal del chat --- */
+/* --- Área del chat --- */
 .chat-area {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  position: relative;
+  flex-grow: 1;
   overflow: hidden;
+  background: #000;
+}
+
+/* --- Formulario nuevo mensaje --- */
+.chat-area form {
+  flex-shrink: 0;
+  padding: 0.75rem;
+  position: relative;
+  z-index: 10;
 }
 
 /* --- Contenedor del formulario --- */
@@ -270,7 +272,6 @@ body {
 
 /* --- Botón enviar --- */
 .message-send-btn {
-
   background: linear-gradient(135deg, #00e0ff, #7a00ff);
   border: none;
   color: white;
@@ -286,19 +287,57 @@ body {
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
 }
 
-/* --- Versión móvil --- */
+/* === MOBILE: tipo Messenger === */
 @media (max-width: 768px) {
-  .message-form-container {
-    padding: 8px;
+  .chat-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1001;
   }
 
-  .message-input {
-    font-size: 14px;
-    padding: 8px;
+  .chat-area {
+    position: fixed;
+    top: 48px;
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - 48px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #000;
+    overflow: hidden;
+    z-index: 1000;
   }
 
-  .message-send-btn {
-    padding: 8px 12px;
-    font-size: 14px;
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.75rem;
   }
+
+  .chat-area form {
+    flex-shrink: 0;
+    padding: 0.75rem;
+    position: sticky;
+    bottom: 0;
+  }
+
+  .btn-back {
+    background: none;
+    border: none;
+    color: #00ffff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 0;
+  }
+}
+
+/* --- Contenedor principal --- */
+.sci-fi-main,
+#chat_panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
