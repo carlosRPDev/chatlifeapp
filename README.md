@@ -31,7 +31,7 @@
 Clona el repositorio:
 
 ```bash
-git clone https://github.com/tu_usuario/chatlifeapp.git
+git clone git@github.com:carlosRPDev/chatlifeapp.git
 cd chatlifeapp
 ```
 
@@ -95,3 +95,11 @@ Si deseas contribuir:
 3. Haz tus cambios y commitea (`git commit -am 'Agrega nueva funcionalidad'`).
 4. Haz push a tu rama (`git push origin feature/nueva-funcionalidad`).
 5. Abre un Pull Request en GitHub.
+
+---
+
+## Notas importantes
+
+- Turbo Streams puede requerir reconexión automática en dispositivos móviles para que los badges de mensajes no leídos se actualicen sin recargar la página.
+- Para desarrollo local, asegúrate de que Action Cable esté corriendo correctamente (/cable).
+- Es un proyecto de practicas y reforzar conocimientos
